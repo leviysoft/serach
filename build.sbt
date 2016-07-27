@@ -18,3 +18,7 @@ jfxSettings
 
 JFX.mainClass := Some("leviysoft.serach.Serach")
 
+JFX.nativeBundles := "image"
+
+JFX.antLib := Some("C:/Program Files/Java/jdk1.8.0/lib/ant-javafx.jar")
+
