@@ -9,7 +9,7 @@ import ru._
 object DSLCompiler {
   private val toolBox = ru.runtimeMirror(getClass.getClassLoader).mkToolBox()
 
-  val elastic4sImports =
+  private val elastic4sImports =
     s"""
        |import com.sksamuel.elastic4s.ElasticDsl._
      """.stripMargin
