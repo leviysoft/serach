@@ -7,7 +7,7 @@ import scalafxml.core.{DependenciesByType, FXMLView}
 
 object Serach extends JFXApp {
   stage = new JFXApp.PrimaryStage() {
-    title = "Test window"
+    title = "Serach [Alpha] for ElasticSearch 2.3.x"
     scene = new Scene(
       FXMLView(
         getClass.getResource("main.fxml"),

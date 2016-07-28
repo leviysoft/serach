@@ -1,7 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="leviysoft.serach.MainController"/>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="leviysoft.serach.MainController">
+   <children>
+      <TabPane layoutY="40.0" prefHeight="360.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Request">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="373.0" prefWidth="669.0" />
+            </content>
+          </Tab>
+          <Tab text="Response">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="371.0" prefWidth="696.0">
+                     <children>
+                        <TitledPane animated="false" layoutX="598.0" layoutY="-30.0" text="untitled" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+      <ToolBar prefHeight="40.0" prefWidth="800.0">
+        <items>
+            <TextField id="serverAddress" promptText="Server address here" />
+          <Button id="connectButton" mnemonicParsing="false" text="Connect" />
+            <Button id="executeButton" mnemonicParsing="false" text="Execute" />
+        </items>
+      </ToolBar>
+   </children>
+</AnchorPane>
