@@ -31,7 +31,7 @@
       </TabPane>
       <ToolBar prefHeight="40.0" prefWidth="800.0">
         <items>
-            <TextField id="serverAddress" promptText="Server address here" />
+            <TextField fx:id="serverAddress" promptText="Server address here" />
           <Button fx:id="connectButton" mnemonicParsing="false" onAction="#onConnect" text="Connect" />
             <Button fx:id="executeButton" mnemonicParsing="false" onAction="#onExecute" text="Execute" />
         </items>
