@@ -45,11 +45,7 @@ class MainController(
         .forEachRemaining((t: String) => typeSelector += t)
     })
   }
-
-  def indexSelected(ev: ActionEvent): Unit = {
-
-  }
-
+  
   def onExecute(ev: ActionEvent): Unit = {
     client.admin.indices()
 
