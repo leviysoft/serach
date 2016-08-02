@@ -1,7 +1,6 @@
 package leviysoft.serach
 
 import javafx.beans.value.ObservableValue
-import javafx.scene.{input => jfxsi}
 
 import com.sksamuel.elastic4s.ElasticClient
 import leviysoft.serach.compiler.DSLCompiler
@@ -11,9 +10,8 @@ import play.api.libs.json.{JsArray, JsObject, JsValue}
 
 import scalafx.event.ActionEvent
 import scalafx.scene.control._
-import scalafx.scene.input.KeyEvent
+import scalafx.scene.input.{KeyCode, KeyEvent}
 import scalafxml.core.macros.sfxml
-
 import scala.Function.tupled
 
 @sfxml
@@ -28,13 +26,13 @@ class MainController(
 ) {
   private var client: ElasticClient = _
 
-  requestEditor.addEventFilter(KeyEvent.KeyPressed, (e: jfxsi.KeyEvent) => {
-    if (e.getCode == jfxsi.KeyCode.TAB) {
+  def tabFixer(ev: KeyEvent): Unit = {
+    if (ev.code == KeyCode.Tab) {
       val s = ' '.toString * 4
       requestEditor.insertText(requestEditor.getCaretPosition, s)
-      e.consume()
+      ev.consume()
     }
-  })
+  }
 
   def onConnect(ev: ActionEvent): Unit = {
     client = ElasticClient.transport(s"elasticsearch://${serverAddress.text()}")
