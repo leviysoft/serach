@@ -1,13 +1,13 @@
 package leviysoft.serach
 
 import javafx.beans.value.ObservableValue
-import javafx.scene.control.Alert
 import javafx.scene.{input => jfxsi}
 
 import com.sksamuel.elastic4s.ElasticClient
 import leviysoft.serach.compiler.DSLCompiler
+import leviysoft.serach.elastic.playJsonHitAs
 import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsRequest
-import play.api.libs.json.JsValue
+import play.api.libs.json.{JsArray, JsObject, JsValue}
 
 import scalafx.event.ActionEvent
 import scalafx.scene.control._
@@ -22,7 +22,7 @@ class MainController(
   private val typeSelector: ComboBox[String],
   private val executeButton: Button,
   private val requestEditor: TextArea,
-  private val responseAst: TreeView[JsValue]
+  private val responseAst: TreeView[String]
 ) {
   private var client: ElasticClient = _
 
@@ -45,18 +45,30 @@ class MainController(
         .forEachRemaining((t: String) => typeSelector += t)
     })
   }
-  
+
+  def convertToNodes(rootNodeName: String)(jso: JsValue): TreeItem[String] = {
+    jso match {
+      case JsObject(fields) =>
+        val node = new TreeItem[String](rootNodeName)
+        node.children = fields.map(kv => convertToNodes(kv._1)(kv._2)).toSeq
+        node
+      case JsArray(items) =>
+        new TreeItem[String](items.mkString(","))
+      case jsv =>
+        new TreeItem[String](s"$rootNodeName: $jsv")
+    }
+  }
+
   def onExecute(ev: ActionEvent): Unit = {
-    client.admin.indices()
+    import com.sksamuel.elastic4s.ElasticDsl._
 
-    val query = DSLCompiler.compileQuery(requestEditor.text())
+    val queryDef = DSLCompiler.compileQuery(requestEditor.text())
+    val request = search in indexSelector.value.value / typeSelector.value.value query queryDef
+    val result = client.execute(request).await.as[JsObject].map(convertToNodes("hit"))
 
-    val alert = new Alert(Alert.AlertType.INFORMATION)
+    val root = new TreeItem[String]("Response")
+    root.children = result
 
-    alert.setTitle("Information")
-    alert.setHeaderText(null)
-    alert.setContentText(query.builder.toString)
-
-    alert.showAndWait()
+    responseAst.root = root
   }
 }
