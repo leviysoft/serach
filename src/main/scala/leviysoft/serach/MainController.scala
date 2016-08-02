@@ -14,6 +14,8 @@ import scalafx.scene.control._
 import scalafx.scene.input.KeyEvent
 import scalafxml.core.macros.sfxml
 
+import scala.Function.tupled
+
 @sfxml
 class MainController(
   private val serverAddress: TextField,
@@ -50,10 +52,10 @@ class MainController(
     jso match {
       case JsObject(fields) =>
         val node = new TreeItem[String](rootNodeName)
-        node.children = fields.map(kv => convertToNodes(kv._1)(kv._2)).toSeq
+        node.children = fields.map(tupled((key: String, value: JsValue) => convertToNodes(key)(value))).toSeq
         node
       case JsArray(items) =>
-        new TreeItem[String](items.mkString(","))
+        new TreeItem[String](s"$rootNodeName: [${items.mkString(",")}]")
       case jsv =>
         new TreeItem[String](s"$rootNodeName: $jsv")
     }
@@ -64,10 +66,11 @@ class MainController(
 
     val queryDef = DSLCompiler.compileQuery(requestEditor.text())
     val request = search in indexSelector.value.value / typeSelector.value.value query queryDef
-    val result = client.execute(request).await.as[JsObject].map(convertToNodes("hit"))
+    val result = client.execute(request).await
+    val jsHits = result.hits.map(hit => convertToNodes(hit.id)(hit.as[JsObject]))
 
-    val root = new TreeItem[String]("Response")
-    root.children = result
+    val root = new TreeItem[String](s"Took ${result.tookInMillis}, total hits: ${result.totalHits}")
+    root.children = jsHits
 
     responseAst.root = root
   }
