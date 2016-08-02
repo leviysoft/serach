@@ -22,7 +22,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="371.0" prefWidth="696.0">
                      <children>
-                        <TitledPane animated="false" layoutX="598.0" layoutY="-30.0" text="untitled" />
+                        <TreeView fx:id="responseAst" prefHeight="329.0" prefWidth="800.0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -33,6 +33,8 @@
         <items>
             <TextField fx:id="serverAddress" promptText="Server address here" />
           <Button fx:id="connectButton" mnemonicParsing="false" onAction="#onConnect" text="Connect" />
+            <ComboBox fx:id="indexSelector" prefWidth="150.0" />
+            <ComboBox fx:id="typeSelector" prefWidth="150.0" />
             <Button fx:id="executeButton" mnemonicParsing="false" onAction="#onExecute" text="Execute" />
         </items>
       </ToolBar>
