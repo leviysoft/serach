@@ -6,6 +6,7 @@ import com.sksamuel.elastic4s.ElasticClient
 import leviysoft.serach.compiler.DSLCompiler
 import leviysoft.serach.elastic.playJsonHitAs
 import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsRequest
+import org.elasticsearch.common.settings.Settings
 import play.api.libs.json.{JsArray, JsObject, JsValue}
 
 import scalafx.event.ActionEvent
@@ -35,7 +36,8 @@ class MainController(
   }
 
   def onConnect(ev: ActionEvent): Unit = {
-    client = ElasticClient.transport(s"elasticsearch://${serverAddress.text()}")
+    val esSettings = Settings.settingsBuilder().put("client.transport.ignore_cluster_name", true).build()
+    client = ElasticClient.transport(esSettings, s"elasticsearch://${serverAddress.text()}")
     client.admin.cluster().prepareState().execute().actionGet().getState.getMetaData.concreteAllIndices().foreach { indexName =>
       indexSelector += indexName
     }
