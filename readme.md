@@ -6,7 +6,7 @@ Serach is a GUI ElasticSearch client written in Scala that uses [elastic4s](http
 At this moment Serach can execute Your query and represent result in a TreeView. There will be more
 debug & administration features later.
 
-#Building serach
+### Building serach
 Serach uses [sbt-javafx](https://github.com/kavedaa/sbt-javafx) for packaging. You can bundle Serach by the
 following steps:
 - set proper path for `ant-javafx.jar` in build.sbt
